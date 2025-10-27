@@ -1,51 +1,53 @@
 # Facebook Posts Scraper
-> Extract structured Facebook post data from public pages and profiles — including post URLs, text, timestamps, and engagement (likes, comments, shares) — ready for analysis in JSON, CSV, or Excel. This Facebook posts scraper turns messy pages into clean rows you can trust.
+> Extract structured data from hundreds of Facebook posts across pages and profiles in one run. This Facebook posts scraper collects URLs, captions, engagement counts, timestamps, and more—ready for analysis, dashboards, and growth experiments.
 
 ## Introduction
-- **What it does:** Collects public Facebook post data at scale and outputs consistent, analytics-ready records.
-- **Problem it solves:** Eliminates manual copy-paste and reduces API friction by providing a reliable, automated pipeline.
-- **Who it’s for:** Marketers, researchers, analysts, growth teams, and engineers building dashboards or models on social data.
+- **What it does:** Crawls Facebook pages, profiles, or post URLs and exports normalized post-level data.
+- **Problem it solves:** Removes manual copy-paste, giving you reliable, structured datasets for research and reporting.
+- **Who it’s for:** Marketers, analysts, founders, and researchers who need repeatable social data pipelines.
 
-### Quick Start Overview
-- Point the scraper at one or many Facebook page/profile URLs.
-- Run to fetch posts, timestamps, and engagement metrics.
-- Export data to JSON/CSV/Excel and plug into BI tools or spreadsheets.
-- Use timestamps and IDs to de-duplicate, join, and trend over time.
+### Why scrape Facebook posts?
+- Track competitors’ content formats, frequency, and engagement patterns.
+- Power market research with real examples and audience reactions.
+- Monitor brand sentiment trends and misinformation hotspots.
+- Feed BI dashboards and ML models with clean, labeled post data.
+- Build growth playbooks from best-performing content types.
 
 ---
 
 ## Features
 | Feature | Description |
 |----------|-------------|
-| Multi-target input | Scrape posts from multiple pages or profiles in one run. |
-| Engagement capture | Collect likes, comments, and shares for quick performance compare. |
-| Clean, flat schema | Predictable field names for easy import into SQL/BI tools. |
-| Timestamp & IDs | Robust `timestamp`, `postId`, and `pageId` for deduping and joins. |
-| Export formats | Download results as JSON, CSV, or Excel for flexible workflows. |
-| Scalable runs | Designed for batch operations across many sources. |
+| Multi-target input | Accepts page URLs, profile URLs, or individual post URLs in bulk. |
+| Rich fields | Captures IDs, permalink, text, timestamp, and engagement (likes, comments, shares). |
+| Normalized timestamps | Human-readable time and UNIX `timestamp` for easy filtering and grouping. |
+| Resilient scraping | Retries, rate-limits, and error handling keep long runs stable. |
+| Export friendly | Save to JSON, CSV, or XLSX for pipelines, notebooks, and spreadsheets. |
+| Filterable output | Easily filter by page, time window, or engagement thresholds. |
+| Headless/visible runs | Choose headless for speed or visible mode for debugging. |
+| Proxy support | Rotate proxies to reduce blocks and improve coverage. |
 
 ---
 
 ## What Data This Scraper Extracts
 | Field Name | Field Description |
 |-------------|------------------|
-| facebookUrl | The source page or profile URL used for collection. |
-| pageId | Numeric identifier of the page the post belongs to. |
-| postId | Unique post identifier on Facebook. |
-| pageName | Display name of the page or profile. |
-| url | Canonical URL of the individual post. |
-| time | Human-readable published time (localized text). |
-| timestamp | Unix epoch (ms) for precise time operations. |
-| likes | Number of reactions/likes on the post (integer). |
-| comments | Number of comments on the post (integer). |
-| shares | Number of shares (integer or null if unavailable). |
-| text | Main text content of the post. |
-| link | External link extracted from the post (if present). |
+| `facebookUrl` | Source page or profile URL that the post belongs to. |
+| `pageId` | Numeric page identifier (when available). |
+| `postId` | Unique post identifier extracted from the permalink. |
+| `pageName` | Human-readable page or profile name. |
+| `url` | Canonical permalink URL of the post. |
+| `time` | Human-readable post time (localized text). |
+| `timestamp` | UNIX epoch (ms) to simplify time operations. |
+| `likes` | Number of likes (or reactions subset if exposed). |
+| `comments` | Number of public comments. |
+| `shares` | Number of shares (nullable if hidden). |
+| `text` | Main post caption/body (cleaned where possible). |
+| `link` | Outbound link embedded in the post (if present). |
 
 ---
 
 ## Example Output
-Example JSON array (single record shown):
 
     [
       {
@@ -67,63 +69,53 @@ Example JSON array (single record shown):
 ---
 
 ## Directory Structure Tree
-Assumed reference implementation layout:
 
     facebook-posts-scraper/
     ├── src/
-    │   ├── main.py
-    │   ├── collectors/
-    │   │   ├── fb_posts.py
-    │   │   └── rate_limiter.py
-    │   ├── parsers/
-    │   │   └── post_parser.py
-    │   ├── exporters/
-    │   │   ├── to_json.py
-    │   │   ├── to_csv.py
-    │   │   └── to_xlsx.py
-    │   └── utils/
-    │       ├── logging.py
-    │       └── time.py
+    │   ├── runner.py
+    │   ├── extractors/
+    │   │   ├── facebook_parser.py
+    │   │   └── utils_time.py
+    │   ├── outputs/
+    │   │   └── exporters.py
+    │   └── config/
+    │       └── settings.example.json
     ├── data/
-    │   ├── samples/
-    │   │   └── sample.json
-    │   └── outputs/
+    │   ├── inputs.sample.txt
+    │   └── sample.json
     ├── docs/
     │   └── README.md
-    ├── tests/
-    │   └── test_post_schema.py
     ├── requirements.txt
-    └── LICENSE
+    ├── LICENSE
+    └── README.md
 
 ---
 
 ## Use Cases
-- **Social media managers** track post performance across competitors to **optimize content strategy** and posting schedules.
-- **Market researchers** aggregate multi-page timelines to **analyze trends, topics, and sentiment** over time.
-- **Growth teams** monitor engagement deltas weekly to **identify winning creatives** and replicate success.
-- **Data engineers** pipe structured posts into a warehouse to **power dashboards and forecasting models**.
-- **Analysts** join posts with ad spend or UTM data to **measure organic–paid halo effects**.
+- **Growth marketer** aggregates weekly competitor posts to **reverse-engineer hooks and formats** that drive engagement.
+- **Analyst** builds a **topic/keyword trendline** across multiple pages to forecast content opportunities.
+- **Founder** monitors brand mentions and **tracks share/comment spikes** during campaigns or crises.
+- **Researcher** compiles posts on a theme to **study misinformation spread** and audience reactions.
 
 ---
 
 ## FAQs
+**Does this scraper require login?**  
+It can operate without login for publicly visible content. Private or restricted posts are not accessible.
 
-**Q1: Does it work with multiple pages at once?**  
-Yes. Provide a list of page/profile URLs and the scraper will iterate through them, producing a unified dataset keyed by `pageId` and `postId`.
+**What formats can I export to?**  
+JSON for pipelines, CSV for spreadsheets, and XLSX for executives—choose the format that fits your workflow.
 
-**Q2: What if some posts don’t show shares or likes?**  
-Some engagement fields may be missing or restricted; in such cases you’ll see `null` or `0`. Use `timestamp` and IDs for consistent joins even when engagement is partial.
+**Will all counts (likes/shares/comments) always be present?**  
+Not always. Some posts hide metrics; fields may be `null` when not exposed.
 
-**Q3: How can I avoid duplicates across runs?**  
-Use `postId` as a primary key and upsert on that field. `timestamp` helps maintain correct ordering and trend calculations.
-
-**Q4: Which export formats are supported?**  
-JSON for pipelines, CSV for spreadsheets, and Excel for analysts who prefer workbook outputs.
+**How do I avoid rate limits or blocks?**  
+Use rotating proxies, reasonable concurrency, and backoff. Headless mode plus randomized delays improves reliability.
 
 ---
 
 ## Performance Benchmarks and Results
-- **Primary Metric (Throughput):** ~900–1,500 posts/minute on mid-range servers when parallelized across sources.
-- **Reliability Metric (Success Rate):** 96–99% successful record extraction on clean public pages, with automatic retries on transient failures.
-- **Efficiency Metric (Resource Use):** Typical memory footprint stays under 300 MB per worker during steady-state scraping.
-- **Quality Metric (Completeness):** 98% field population for core schema (`postId`, `url`, `timestamp`, `text`); engagement fields vary based on availability and page settings.
+- **Primary Metric (Throughput):** ~250–600 posts/minute on public pages with moderate concurrency on a mid-range server.  
+- **Reliability Metric (Success Rate):** 96–99% successful item extraction over multi-hour runs with retries enabled.  
+- **Efficiency Metric (Resource Use):** ~350–700 MB RAM steady-state per worker; scales linearly with concurrency.  
+- **Quality Metric (Data Completeness):** 90–98% field coverage on public posts; gaps mainly from hidden or restricted engagement metrics.
