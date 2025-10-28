@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://bitbash.dev" target="_blank">
-    <img src="media/scraper.png" alt="BITBASH Banner" width="100%">
+    <img src="media/appilot-baner.png" alt="BITBASH Banner" width="100%">
   </a>
 </p>
 <p align="center">
