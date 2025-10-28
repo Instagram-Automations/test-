@@ -156,8 +156,9 @@ Yes, you can schedule mood changes and sound profiles using built-in schedulers.
 ##
 
 <p align="center">
-<a href="https://calendar.app.google/GyobA324GxBqe6en6" target="_blank">
+<a href="https://cal.com/app-pilot-m8i8oo/30min" target="_blank">
   <img src="https://img.shields.io/badge/Book%20a%20Call%20with%20Us-34A853?style=for-the-badge&logo=googlecalendar&logoColor=white" alt="Book a Call">
 </a>
 </p>
+
 
